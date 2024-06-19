@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Funkcja sześcienna</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #wynik {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="calculator">
+    <h1>Obliczanie pierwiastków funkcji sześciennej</h1>
+    <form id="wielomianForm">
+        <label for="a">Współczynnik a (przy x^3): </label>
+        <input type="number" id="a" name="a" step="any" required><br>
+        <label for="b">Współczynnik b (przy x^2): </label>
+        <input type="number" id="b" name="b" step="any" required><br>
+        <label for="c">Współczynnik c (przy x): </label>
+        <input type="number" id="c" name="c" step="any" required><br>
+        <label for="d">Wyraz wolny d: </label>
+        <input type="number" id="d" name="d" step="any" required><br>
+        <button type="button" onclick="znajdzPierwiastki()">Oblicz</button>
+    </form>
+    <p id="wynik"></p>
+</div>
+
+<script>
+    function znajdzPierwiastki() {
+        const a = parseFloat(document.getElementById('a').value);
+        const b = parseFloat(document.getElementById('b').value);
+        const c = parseFloat(document.getElementById('c').value);
+        const d = parseFloat(document.getElementById('d').value);
+
+        const f = ((3*c/a) - (b*b)/(a*a)) / 3;
+        const g = ((2*b*b*b)/(a*a*a) - (9*b*c)/(a*a) + (27*d/a)) / 27;
+        const h = g*g/4 + f*f*f/27;
+
+        let x1, x2, x3;
+        if (h > 0) {
+            const r = -(g/2) + Math.sqrt(h);
+            const s = Math.cbrt(r);
+            const t = -(g/2) - Math.sqrt(h);
+            const u = Math.cbrt(t);
+            x1 = (s + u) - (b/(3*a));
+            document.getElementById('wynik').innerText = `Jeden rzeczywisty pierwiastek: x = ${x1}`;
+        } else if (f === 0 && g === 0 && h === 0) {
+            x1 = x2 = x3 = -Math.cbrt(d/a);
+            document.getElementById('wynik').innerText = `Jeden potrójny pierwiastek: x = ${x1}`;
+        } else {
+            const i = Math.sqrt((g*g/4) - h);
+            const j = Math.cbrt(i);
+            const k = Math.acos(-(g/(2*i)));
+            const l = -j;
+            const m = Math.cos(k/3);
+            const n = Math.sqrt(3) * Math.sin(k/3);
+            const p = -(b/(3*a));
+            x1 = 2*j*Math.cos(k/3) - (b/(3*a));
+            x2 = l * (m + n) + p;
+            x3 = l * (m - n) + p;
+            document.getElementById('wynik').innerText = `Trzy rzeczywiste pierwiastki: x1 = ${x1}, x2 = ${x2}, x3 = ${x3}`;
+        }
+    }
+</script>
+
+</body>
+</html>
